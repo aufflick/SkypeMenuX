@@ -1,0 +1,97 @@
+//
+//  AboutController.m
+//  SkypeMenu
+//
+//  Created by Mark Aufflick on 26/10/05.
+//
+
+/*
+ Copyright © 2005, Mark Aufflick
+ All rights reserved.
+ 
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 
+ * Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+ 
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+ 
+ * Neither the name of Mark Aufflick nor the names of contributors
+   may be used to endorse or promote products derived from this
+   software without specific prior written permission.
+ 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ 
+ */
+
+#import "AboutController.h"
+#import <WebKit/WebKit.h>;
+#import <WebKit/WebUIDelegate.h>;
+
+@implementation AboutController
+
+-(id)init {
+	self=[super initWithWindowNibName:@"About"];
+	return self;
+}
+
+- (void)awakeFromNib
+{
+	// should set the version string dynamically here from strings
+	[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:
+		[NSString stringWithFormat:@"%@/Credits.html", [[NSBundle mainBundle] resourcePath]]]]];
+}
+
+-(void)showAbout {
+		
+	//[NSApp unhide:NSApp];
+	[[self window] makeKeyAndOrderFront:nil];
+	[NSApp activateIgnoringOtherApps:YES];
+	[[self window] makeKeyAndOrderFront:nil];
+	//[self orderFrontStandardAboutPanelWithOptions:nil];
+	
+}
+
+- (void)windowWillClose:(NSNotification *)aNotification
+{
+	// relinquish being the key app once the about window is closed
+	//[NSApp hide:nil];
+	
+	// free up the ram - not sure this works (according to ObjectAlloc)
+	// must be some way to flush the webkit stuff...
+	//[parent releaseAboutController];
+}
+
+// intercept new window link clicks
+- (void)webView:(WebView *)sender decidePolicyForNewWindowAction:(NSDictionary *)actionInformation request:(NSURLRequest *)request newFrameName:(NSString *)frameName decisionListener:(id<WebPolicyDecisionListener>)listener
+{
+	[[NSWorkspace sharedWorkspace] openURL:[request URL]];
+}
+
+-(id)parent
+{
+	return parent;
+}
+
+-(void)setParent:(id)newParent
+{
+	parent = newParent;
+	// don't want to do a retain here due to circular ref
+}
+
+@end

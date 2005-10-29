@@ -1,0 +1,756 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 39;
+	objects = {
+		080E96DDFE201D6D7F000001 = {
+			children = (
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		089C165CFE840E0CC02AAC07 = {
+			children = (
+				089C165DFE840E0CC02AAC07,
+			);
+			isa = PBXVariantGroup;
+			name = InfoPlist.strings;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		089C165DFE840E0CC02AAC07 = {
+			fileEncoding = 10;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.strings;
+			name = English;
+			path = English.lproj/InfoPlist.strings;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+//080
+//081
+//082
+//083
+//084
+//100
+//101
+//102
+//103
+//104
+		1058C7A0FEA54F0111CA2CBB = {
+			children = (
+				1058C7A1FEA54F0111CA2CBB,
+			);
+			isa = PBXGroup;
+			name = "Linked Frameworks";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		1058C7A1FEA54F0111CA2CBB = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = Cocoa.framework;
+			path = /System/Library/Frameworks/Cocoa.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		1058C7A2FEA54F0111CA2CBB = {
+			children = (
+				64BC0EAF0910A3D100A8042B,
+				641F72590907C9E900C5D6A6,
+				64788ECA090275D200303A28,
+				29B97325FDCFA39411CA2CEA,
+				29B97324FDCFA39411CA2CEA,
+			);
+			isa = PBXGroup;
+			name = "Other Frameworks";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+//100
+//101
+//102
+//103
+//104
+//190
+//191
+//192
+//193
+//194
+		19C28FACFE9D520D11CA2CBB = {
+			children = (
+				8D1107320486CEB800E47090,
+			);
+			isa = PBXGroup;
+			name = Products;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+//190
+//191
+//192
+//193
+//194
+//290
+//291
+//292
+//293
+//294
+		29B97313FDCFA39411CA2CEA = {
+			buildSettings = {
+			};
+			buildStyles = (
+				4A9504CCFFE6A4B311CA0CBA,
+				4A9504CDFFE6A4B311CA0CBA,
+			);
+			hasScannedForEncodings = 1;
+			isa = PBXProject;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
+			projectDirPath = "";
+			targets = (
+				8D1107260486CEB800E47090,
+			);
+		};
+		29B97314FDCFA39411CA2CEA = {
+			children = (
+				6456E0F70911082900C52A94,
+				080E96DDFE201D6D7F000001,
+				29B97315FDCFA39411CA2CEA,
+				29B97317FDCFA39411CA2CEA,
+				29B97323FDCFA39411CA2CEA,
+				19C28FACFE9D520D11CA2CBB,
+				64BC0EE90910BD8D00A8042B,
+			);
+			isa = PBXGroup;
+			name = SkypeMenu;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA = {
+			children = (
+				64F91CFB090F064A005D465C,
+				64F91CFC090F064A005D465C,
+				64788EDA0902765200303A28,
+				64788EDB0902765200303A28,
+				32CA4F630368D1EE00C91783,
+				29B97316FDCFA39411CA2CEA,
+			);
+			isa = PBXGroup;
+			name = "Other Sources";
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		29B97316FDCFA39411CA2CEA = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = main.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA = {
+			children = (
+				64F91DA1090FA6CD005D465C,
+				64ACB9D10911F832005EDE2B,
+				64ACB9D20911F832005EDE2B,
+				64ACB9D30911F832005EDE2B,
+				64ACB9D40911F832005EDE2B,
+				64ACB9D50911F832005EDE2B,
+				6475F599090D289200856DA8,
+				64BF8537090DEBCF000C831E,
+				6475F59D090D289B00856DA8,
+				64ADD1E1090EEE1200308A1E,
+				8D1107310486CEB800E47090,
+				089C165CFE840E0CC02AAC07,
+				64F91CF7090F0623005D465C,
+				29B97318FDCFA39411CA2CEA,
+				6456E0E70910DAD000C52A94,
+				6456E0ED0910DC4300C52A94,
+				649E57B10911ED030034C092,
+				649E57B20911ED030034C092,
+			);
+			isa = PBXGroup;
+			name = Resources;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		29B97318FDCFA39411CA2CEA = {
+			children = (
+				29B97319FDCFA39411CA2CEA,
+			);
+			isa = PBXVariantGroup;
+			name = MainMenu.nib;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		29B97319FDCFA39411CA2CEA = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
+			name = English;
+			path = English.lproj/MainMenu.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA = {
+			children = (
+				1058C7A0FEA54F0111CA2CBB,
+				1058C7A2FEA54F0111CA2CBB,
+			);
+			isa = PBXGroup;
+			name = Frameworks;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		29B97324FDCFA39411CA2CEA = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = AppKit.framework;
+			path = /System/Library/Frameworks/AppKit.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		29B97325FDCFA39411CA2CEA = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = Foundation.framework;
+			path = /System/Library/Frameworks/Foundation.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+//290
+//291
+//292
+//293
+//294
+//320
+//321
+//322
+//323
+//324
+		32CA4F630368D1EE00C91783 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SkypeMenu_Prefix.pch;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+//320
+//321
+//322
+//323
+//324
+//4A0
+//4A1
+//4A2
+//4A3
+//4A4
+		4A9504CCFFE6A4B311CA0CBA = {
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ZERO_LINK = YES;
+			};
+			isa = PBXBuildStyle;
+			name = Development;
+		};
+		4A9504CDFFE6A4B311CA0CBA = {
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				ZERO_LINK = NO;
+			};
+			isa = PBXBuildStyle;
+			name = Deployment;
+		};
+//4A0
+//4A1
+//4A2
+//4A3
+//4A4
+//640
+//641
+//642
+//643
+//644
+		641F72590907C9E900C5D6A6 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			path = AGRegex.framework;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		641F725A0907C9E900C5D6A6 = {
+			fileRef = 641F72590907C9E900C5D6A6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		641F72650907CA2900C5D6A6 = {
+			fileRef = 641F72590907C9E900C5D6A6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		6456E0E70910DAD000C52A94 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = Banner.png;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		6456E0E80910DAD000C52A94 = {
+			fileRef = 6456E0E70910DAD000C52A94;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		6456E0ED0910DC4300C52A94 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = "banner-right.png";
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		6456E0EE0910DC4300C52A94 = {
+			fileRef = 6456E0ED0910DC4300C52A94;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		6456E0F70911082900C52A94 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			path = README.txt;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		6456E0F80911082900C52A94 = {
+			fileRef = 6456E0F70911082900C52A94;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		6475F599090D289200856DA8 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = SkypeIcon.png;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		6475F59A090D289200856DA8 = {
+			fileRef = 6475F599090D289200856DA8;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		6475F59D090D289B00856DA8 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = SkypeIconHighlight.png;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		6475F59E090D289B00856DA8 = {
+			fileRef = 6475F59D090D289B00856DA8;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64788ECA090275D200303A28 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			path = Skype.framework;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		64788ECB090275D200303A28 = {
+			fileRef = 64788ECA090275D200303A28;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64788ED4090275E300303A28 = {
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				641F72650907CA2900C5D6A6,
+				64788ED7090275F300303A28,
+			);
+			isa = PBXCopyFilesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64788ED7090275F300303A28 = {
+			fileRef = 64788ECA090275D200303A28;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64788EDA0902765200303A28 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SkypeMenuController.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		64788EDB0902765200303A28 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SkypeMenuController.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		64788EDC0902765200303A28 = {
+			fileRef = 64788EDA0902765200303A28;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64788EDD0902765200303A28 = {
+			fileRef = 64788EDB0902765200303A28;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		649E57B10911ED030034C092 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = statusoffline.png;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		649E57B20911ED030034C092 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = statusonline.png;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		649E57B30911ED030034C092 = {
+			fileRef = 649E57B10911ED030034C092;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		649E57B40911ED030034C092 = {
+			fileRef = 649E57B20911ED030034C092;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64ACB9D10911F832005EDE2B = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = statusaway.png;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		64ACB9D20911F832005EDE2B = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = statusdonotdisturb.png;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		64ACB9D30911F832005EDE2B = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = statuschat.png;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		64ACB9D40911F832005EDE2B = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = statusnotavailable.png;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		64ACB9D50911F832005EDE2B = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = statusinvisible.png;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		64ACB9D60911F832005EDE2B = {
+			fileRef = 64ACB9D10911F832005EDE2B;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64ACB9D70911F832005EDE2B = {
+			fileRef = 64ACB9D20911F832005EDE2B;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64ACB9D80911F832005EDE2B = {
+			fileRef = 64ACB9D30911F832005EDE2B;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64ACB9D90911F832005EDE2B = {
+			fileRef = 64ACB9D40911F832005EDE2B;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64ACB9DA0911F832005EDE2B = {
+			fileRef = 64ACB9D50911F832005EDE2B;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64ADD1E1090EEE1200308A1E = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.icns;
+			path = SkypeMenuX.icns;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		64ADD1E2090EEE1200308A1E = {
+			fileRef = 64ADD1E1090EEE1200308A1E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64BC0EAF0910A3D100A8042B = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = WebKit.framework;
+			path = /System/Library/Frameworks/WebKit.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		64BC0EB00910A3D100A8042B = {
+			fileRef = 64BC0EAF0910A3D100A8042B;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64BC0EE90910BD8D00A8042B = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.xml;
+			path = "SkypeMenuX-Info.plist";
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		64BF8537090DEBCF000C831E = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = SkypeIconDisabled.png;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		64BF8538090DEBCF000C831E = {
+			fileRef = 64BF8537090DEBCF000C831E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64F91CF7090F0623005D465C = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
+			path = About.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		64F91CF8090F0623005D465C = {
+			fileRef = 64F91CF7090F0623005D465C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64F91CFB090F064A005D465C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = AboutController.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		64F91CFC090F064A005D465C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = AboutController.m;
+			refType = 4;
+			sourceTree = "<group>";
+			wrapsLines = 0;
+		};
+		64F91CFD090F064A005D465C = {
+			fileRef = 64F91CFB090F064A005D465C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64F91CFE090F064A005D465C = {
+			fileRef = 64F91CFC090F064A005D465C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		64F91DA1090FA6CD005D465C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.html;
+			path = Credits.html;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		64F91DA2090FA6CD005D465C = {
+			fileRef = 64F91DA1090FA6CD005D465C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+//640
+//641
+//642
+//643
+//644
+//8D0
+//8D1
+//8D2
+//8D3
+//8D4
+		8D1107260486CEB800E47090 = {
+			buildPhases = (
+				8D1107290486CEB800E47090,
+				8D11072C0486CEB800E47090,
+				8D11072E0486CEB800E47090,
+				64788ED4090275E300303A28,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Users/aufflick/src/SkypeMenuX;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = SkypeMenu_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = SkypeMenuX;
+				WRAPPER_EXTENSION = app;
+			};
+			comments = "SkypeMenuX provides a System Extra menu for Skype.\n\nThis menu allows you to:\n  • View and change your Skype user status\n  • Launch or Quit Skype\n\nThe next version of this menu will allow you to:\n  • See which of your Skype buddies are online\n  • Start an IM or voice call to one of your online Skype buddies\n\nThis application uses the excellent Skype Cocoa API (see http://share.skype.com/ ).\n\nThis application is provided free of charge under the Lesser Gnu Public License (LGPL) for the benefit of Skype users. See \"About SkypeMenuX...\" in the menu for more information.\n\nAuthor: Mark Aufflick ( http://mark.aufflick.com/ )\nSkypeMenuX Website: http://mark.aufflick.com/software/skypemenux\nDownloads: http://sourceforge.net/projects/skypemenux\n";
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = SkypeMenuX;
+			productInstallPath = "$(HOME)/Applications";
+			productName = SkypeMenu;
+			productReference = 8D1107320486CEB800E47090;
+			productType = "com.apple.product-type.application";
+		};
+		8D1107290486CEB800E47090 = {
+			buildActionMask = 2147483647;
+			files = (
+				8D11072A0486CEB800E47090,
+				8D11072B0486CEB800E47090,
+				64788EDC0902765200303A28,
+				6475F59A090D289200856DA8,
+				6475F59E090D289B00856DA8,
+				64BF8538090DEBCF000C831E,
+				64ADD1E2090EEE1200308A1E,
+				64F91CF8090F0623005D465C,
+				64F91CFD090F064A005D465C,
+				64F91DA2090FA6CD005D465C,
+				6456E0E80910DAD000C52A94,
+				6456E0EE0910DC4300C52A94,
+				6456E0F80911082900C52A94,
+				649E57B30911ED030034C092,
+				649E57B40911ED030034C092,
+				64ACB9D60911F832005EDE2B,
+				64ACB9D70911F832005EDE2B,
+				64ACB9D80911F832005EDE2B,
+				64ACB9D90911F832005EDE2B,
+				64ACB9DA0911F832005EDE2B,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D11072A0486CEB800E47090 = {
+			fileRef = 29B97318FDCFA39411CA2CEA;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8D11072B0486CEB800E47090 = {
+			fileRef = 089C165CFE840E0CC02AAC07;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8D11072C0486CEB800E47090 = {
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090,
+				64788EDD0902765200303A28,
+				64F91CFE090F064A005D465C,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D11072D0486CEB800E47090 = {
+			fileRef = 29B97316FDCFA39411CA2CEA;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+				);
+			};
+		};
+		8D11072E0486CEB800E47090 = {
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090,
+				64788ECB090275D200303A28,
+				641F725A0907C9E900C5D6A6,
+				64BC0EB00910A3D100A8042B,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D11072F0486CEB800E47090 = {
+			fileRef = 1058C7A1FEA54F0111CA2CBB;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8D1107310486CEB800E47090 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			path = Info.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		8D1107320486CEB800E47090 = {
+			explicitFileType = wrapper.application;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = SkypeMenuX.app;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA;
+}
