@@ -46,7 +46,7 @@
 #import <AGRegex/AGRegex.h>;
 #import "AboutController.h";
 
-NSString* const myApplicationName = @"Skype Menu";
+NSString* const myApplicationName = @"SkypeMenuX";
 static const int N_USERSTATUS = 9;
 static const int N_USERSTATUS_DEF_KEYS = 6;
 
