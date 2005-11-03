@@ -166,7 +166,6 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 
     // add an entry to the top of the menu for each userstatus
     int i;
-    NSMenuItem *item;
 
     // one for offline
 	[self addStatusMenuItem:USERSTATUS_OFFLINE];
@@ -188,8 +187,8 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 			[self addStatusMenuItem:i];
 	
 	// disable the help entries & the skype quit entries
-	[theMenu setAutoenablesItems: NO];
-    [[theMenu itemAtIndex:0] setEnabled: NO]; // my status
+	[[self quitSubmenu] setAutoenablesItems: NO];
+    //[[theMenu itemAtIndex:0] setEnabled: NO]; // my status - handled by auto enable
 	[[self quitSkypeMenuItem] setEnabled: NO]; // quit skype
 	[[self quitBothMenuItem] setEnabled: NO]; // quit both
 		
@@ -326,14 +325,23 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 	[[self quitBothMenuItem] setEnabled:YES];
 }
 
+-(NSMenu*)quitSubmenu
+{
+	if (![[theMenu itemAtIndex:N_USERSTATUS+5] hasSubmenu]) {
+		NSLog(@"Quit submenu not found");
+		return nil;
+	}
+	return (NSMenu*)[[theMenu itemAtIndex:N_USERSTATUS+5] submenu];
+}
+
 -(NSMenuItem*)quitSkypeMenuItem
 {
-	return (NSMenuItem*)[theMenu itemAtIndex:N_USERSTATUS+6];
+	return (NSMenuItem*)[[self quitSubmenu] itemAtIndex:1];
 }
 
 -(NSMenuItem*)quitBothMenuItem
 {
-	return (NSMenuItem*)[theMenu itemAtIndex:N_USERSTATUS+7];
+	return (NSMenuItem*)[[self quitSubmenu] itemAtIndex:2];
 }
 
 

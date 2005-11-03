@@ -93,7 +93,8 @@
 // open about window
 -(IBAction)openAboutWindow:(id)sender;
 
-// ref to various menu items
+// ref to various menus & items
+-(NSMenu*)quitSubmenu;
 -(NSMenuItem*)quitSkypeMenuItem;
 -(NSMenuItem*)quitBothMenuItem;
 
