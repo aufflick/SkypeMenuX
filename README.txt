@@ -1,3 +1,11 @@
+2005-11-03 : 0.2b : Minor enahncement release
+ * Added a registered creator code to the application build
+ * Moved the Quit menu options into a submenu to save vertical clutter
+
+2005-10-29 : 0.1b : Initial release
+
+------------ Note from initial check in --------
+
 A quick note for the initial source checkin.
 
 This code is licensed under the BSD license. See Credits.html for
