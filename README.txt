@@ -1,3 +1,12 @@
+2005-11-07 : 0.5b : Code cleanup and package
+ * Buddy status feature now ready for general consumption
+
+2005-11-06 : 0.4b : Rewrite of buddy status feature
+ * Updating the menu from within the validate menuItem callback turns
+   out to be a bad idea!
+
+2005-11-05 : 0.3b : Initial limited release of the buddy status feature
+
 2005-11-03 : 0.2b : Minor enahncement release
  * Added a registered creator code to the application build
  * Moved the Quit menu options into a submenu to save vertical clutter
