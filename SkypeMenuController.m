@@ -288,8 +288,8 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
         NSString* skypeCommandString = [NSString stringWithFormat:@"%@%@", @"SET USERSTATUS ", aSkypeStatusString];
     
         [self skypeSend:skypeCommandString];
+		[skypeCommandString autorelease];
     }
-    [aSkypeStatusString release];
 }
 
 -(IBAction)changeStatusMenuItem:(id)sender
