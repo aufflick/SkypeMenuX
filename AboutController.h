@@ -46,8 +46,7 @@
 @interface AboutController : NSWindowController {
 
 	WebView *webView;
-	id parent;
-
+	id versionField;
 }
 
 -(void)showAbout;
