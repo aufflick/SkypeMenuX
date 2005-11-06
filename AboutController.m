@@ -52,7 +52,8 @@
 
 - (void)awakeFromNib
 {
-	// should set the version string dynamically here from strings
+	[versionField setStringValue:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
+	
 	[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:
 		[NSString stringWithFormat:@"%@/Credits.html", [[NSBundle mainBundle] resourcePath]]]]];
 }
@@ -67,31 +68,10 @@
 	
 }
 
-- (void)windowWillClose:(NSNotification *)aNotification
-{
-	// relinquish being the key app once the about window is closed
-	//[NSApp hide:nil];
-	
-	// free up the ram - not sure this works (according to ObjectAlloc)
-	// must be some way to flush the webkit stuff...
-	//[parent releaseAboutController];
-}
-
 // intercept new window link clicks
 - (void)webView:(WebView *)sender decidePolicyForNewWindowAction:(NSDictionary *)actionInformation request:(NSURLRequest *)request newFrameName:(NSString *)frameName decisionListener:(id<WebPolicyDecisionListener>)listener
 {
 	[[NSWorkspace sharedWorkspace] openURL:[request URL]];
-}
-
--(id)parent
-{
-	return parent;
-}
-
--(void)setParent:(id)newParent
-{
-	parent = newParent;
-	// don't want to do a retain here due to circular ref
 }
 
 @end

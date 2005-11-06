@@ -50,7 +50,5 @@
 }
 
 -(void)showAbout;
--(void)setParent: (AboutController*)newParent;
--(id)parent;
 
 @end

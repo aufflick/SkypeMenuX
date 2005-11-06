@@ -691,7 +691,9 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 	// next version : should be a preference to choose if this opens an IM or voice chat
 	NSString *talkCommand = [NSString stringWithFormat:@"OPEN IM %@", buddy];
 
-	[talkCommand autorelease];
+	// without this, we seem to have a small memory leak. with it, we get complaints of a double release
+	// I guess I don't quite get this autorelease pool stuff yet...
+	//[talkCommand autorelease];
 	
 	[self skypeSend:talkCommand];
 	[self bringSkypeToFront];
