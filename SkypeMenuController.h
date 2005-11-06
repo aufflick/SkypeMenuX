@@ -81,6 +81,9 @@
 
   // about window
   AboutController *aboutController;
+  
+  // cache the bring skype to front applescript - used every time we chat
+  NSAppleScript *bringSkypeToFrontScript;
 }
 
 // manage skype status
@@ -117,9 +120,15 @@
 -(void)releaseAboutController;
 
 // handle buddy status changes
--(void)skypeBuddyNotificationReceived:(NSArray*)tokens;
 -(void)skypeBuddy:(NSString*)buddy statusString:(NSString*)status;
 -(IBAction)buddyMenuSelection:(id)sender;
+-(void)clearBuddyMenu;
+-(void)skypeBuddyNotificationReceived:(NSArray*)tokens fullString:(NSString*)notificationString;
+-(void)skypeBuddyListReceived:(NSArray*)tokens;
+-(void)skypeReceivedBuddy:(NSString*)buddy fullnameNotification:(NSString*)notificationString;
+-(void)updateStatusForBuddy:(NSString*)buddy;
+-(void)updateBuddyMenu;
+-(void)clearBuddyMenu;
 
 @end
 

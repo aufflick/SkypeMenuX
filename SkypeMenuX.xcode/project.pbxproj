@@ -657,6 +657,7 @@
 			);
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = /Users/aufflick/src/SkypeMenuX;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SkypeMenu_Prefix.pch;

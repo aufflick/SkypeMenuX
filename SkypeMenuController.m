@@ -233,10 +233,9 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 
 -(void)bringSkypeToFront
 {
-    NSAppleScript *script;
-    script = [[NSAppleScript alloc] initWithSource:@"tell application \"Skype\" to activate"];
-    [script executeAndReturnError:nil];
-    [script release];
+	if (! bringSkypeToFrontScript)
+		bringSkypeToFrontScript = [[NSAppleScript alloc] initWithSource:@"tell application \"Skype\" to activate"];
+    [bringSkypeToFrontScript executeAndReturnError:nil];
 }
 
 -(IBAction)quitSkypeMenuAction:(id)sender
@@ -462,6 +461,10 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 	else {
 		NSLog(@"fullname for buddy (%@) is '%@'", buddy, match);
 		[buddyNames setValue:match forKey:buddy];
+		
+		// if they are in the current menu, refresh it
+		if ( [buddyStatus objectForKey:buddy] )
+			[self updateBuddyMenu];
 	}
 }
 
@@ -491,7 +494,10 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 	// make sure we know their fullname
 	if (![buddyNames objectForKey:buddy]) 
 		// request it
-		[self skypeSend:[NSString stringWithFormat:@"GET USER %@ FULLNAME", buddy]];	
+		[self skypeSend:[NSString stringWithFormat:@"GET USER %@ FULLNAME", buddy]];
+	
+	// now update the menu
+	[self updateBuddyMenu];
 
 }
 
@@ -516,7 +522,7 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
     if ([currentStatusToken isEqualToString:token])
         return;
 
-    [token retain]; // not that memory allocation is being done properly anywhere else
+    [token retain];
     [currentStatusToken release];
     currentStatusToken = token;
 
@@ -529,12 +535,9 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
             if ( [userStatusDefs[i][USERSTATUS_ONLINE_STATUS] isEqualToString: @"OFFLINE"] ) {
                 i = USERSTATUS_OFFLINE; // collapse all offline notifs to one menu item
                 [self toggleMenuSkypeDisconnected];
-				break;
-            }   else {
+            }   else
                 // it's online, so we also need to set the user status in the menu
                 [self toggleMenuSkypeConnected];
-				break;
-            }
 
             [self tickStatusMenuItem:i];
 
@@ -578,67 +581,64 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
     
 }
 
-// ensure the buddy menu is updated when the menu is displayed 
-// need a different way to do this, since we change the menu from under the feet of the
-// array iterator that the foundation class is iterating over...
-- (BOOL)validateMenuItem:(NSMenuItem *)anItem
-{
-	//NSLog(@"validating item: %@", anItem);
-    if([[anItem title] isEqualToString:@"Online"])
-        [self updateBuddyMenu];
-    return YES;
-}
-
 
 -(void)updateBuddyMenu
 {
-	NSLog(@"updating buddy menu");
-	[self clearBuddyMenu];
+	NSLog(@"about to clear & update buddy menu");
 	
-	// the dictionary can change from under us - which would triger a beyond bounds exception
-	NSDictionary *buddyStatusCopy = [NSDictionary dictionaryWithDictionary:buddyStatus];
+	// it seems like the skype api makes a thread to call back from
+	// hard to tell, since the api docs are a little thin
+	
+	// should use a proper mutex object here
+	@synchronized( NSStringFromSelector(_cmd)) {
+
+		[self clearBuddyMenu];
+	
+		NSLog(@"updating buddy menu");
+		
+		// the dictionary can change from under us - which would triger a beyond bounds exception
+		NSDictionary *buddyStatusCopy = [NSDictionary dictionaryWithDictionary:buddyStatus];
 			
+		
+		// should really be sorted by display name, but that is a bit trickier...
+		NSArray *sortedBuddies = [[buddyStatusCopy allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 	
-	// should really be sorted by display name, but that is a bit trickier...
-	NSArray *sortedBuddies = [[buddyStatusCopy allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+		// need the reverse of the sorted array since we are pushing them into the same index location
+		NSEnumerator *buddyEnum = [sortedBuddies reverseObjectEnumerator];
 	
-	// need the reverse of the sorted array since we are pushing them into the same index location
-	NSEnumerator *buddyEnum = [sortedBuddies reverseObjectEnumerator];
+		int itemIndex = [self buddyMenuStartIndex];
+		NSMenuItem *item;
+		NSString *buddy;
 	
-	// need to sort this
-	
-	int itemIndex = [self buddyMenuStartIndex];
-	NSMenuItem *item;
-	NSString *buddy;
-	
-	if ( [buddyStatusCopy count] == 0 ) {
-		NSLog(@"No buddies available");
-		item = [[NSMenuItem alloc]
+		if ( [buddyStatusCopy count] == 0 ) {
+			NSLog(@"No buddies available");
+			item = [[NSMenuItem alloc]
 			       initWithTitle:@"None Available"
 				   action:nil
 				   keyEquivalent:@""];
 		
-		[item setImage:[NSImage imageNamed:@"buddyMenuImage"]];
+			[item setImage:[NSImage imageNamed:@"buddyMenuImage"]];
 		
-		[theMenu insertItem:item atIndex:itemIndex];
-	} else {
-		NSLog(@"%d buddies available", [buddyStatusCopy count]);
+			[theMenu insertItem:item atIndex:itemIndex];
+		} else {
+			NSLog(@"%d buddies available", [buddyStatusCopy count]);
 				
-		while ( (buddy=[buddyEnum nextObject]) ) {
-			NSLog(@"Adding buddy to menu : %@", buddy);
-			NSString *fullname = [buddyNames objectForKey:buddy];
-			fullname = fullname == nil || [fullname isEqualToString:@""] ? buddy : fullname; // some people don't set their fullname property
+			while ( (buddy=[buddyEnum nextObject]) ) {
+				NSLog(@"Adding buddy to menu : %@", buddy);
+				NSString *fullname = [buddyNames objectForKey:buddy];
+				fullname = fullname == nil || [fullname isEqualToString:@""] ? buddy : fullname; // some people don't set their fullname property
 			
-			NSLog(@"fullname is : %@", fullname);
-			item = [[NSMenuItem alloc]
+				NSLog(@"fullname is : %@", fullname);
+				item = [[NSMenuItem alloc]
 				       initWithTitle:fullname
 					   action:@selector(buddyMenuSelection:)
 					   keyEquivalent:@""];
 			
-			[item setImage:[NSImage imageNamed:@"buddyMenuImage"]];
-			[item setTarget:self];
+				[item setImage:[NSImage imageNamed:@"buddyMenuImage"]];
+				[item setTarget:self];
 			
-			[theMenu insertItem:item atIndex:itemIndex];
+				[theMenu insertItem:item atIndex:itemIndex];
+			}
 		}
 	}
 
@@ -646,17 +646,19 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 
 -(void)clearBuddyMenu
 {
-	NSMenuItem *item;
-	NSEnumerator *enumerator = [[theMenu itemArray] objectEnumerator];
-
-	//  NSLog(@"clearing menu"); 
-
-	while(item=[enumerator nextObject])
-		if([item action]==@selector(buddyMenuSelection:) || [[item title] isEqualToString:@"None Available"]){
-			[theMenu removeItem:item];
-			[item dealloc];
-		}
 	
+	NSLog(@"about to clear buddy menu");
+	@synchronized( NSStringFromSelector(_cmd)) {
+		NSLog(@"clearing buddy menu");
+		NSMenuItem *item;
+		NSEnumerator *enumerator = [[theMenu itemArray] objectEnumerator];
+
+		while( (item=[enumerator nextObject]) )
+			if( [item action]==@selector(buddyMenuSelection:) || [[item title] isEqualToString:@"None Available"]){
+				[theMenu removeItem:item];
+				[item dealloc];
+			}
+	}
 }
 
 
@@ -690,6 +692,7 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 	NSString *talkCommand = [NSString stringWithFormat:@"OPEN IM %@", buddy];
 	
 	[self skypeSend:talkCommand];
+	[self bringSkypeToFront];
 }
 
 
