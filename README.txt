@@ -4,6 +4,8 @@
 2005-11-06 : 0.4b : Rewrite of buddy status feature
  * Updating the menu from within the validate menuItem callback turns
    out to be a bad idea!
+ * Now requires OS X 10.3 or later due to use of the ObjC thread
+   synchronisation
 
 2005-11-05 : 0.3b : Initial limited release of the buddy status feature
 
