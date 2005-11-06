@@ -233,7 +233,7 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 
 -(void)bringSkypeToFront
 {
-	if (! bringSkypeToFrontScript)
+	if ( ! bringSkypeToFrontScript )
 		bringSkypeToFrontScript = [[NSAppleScript alloc] initWithSource:@"tell application \"Skype\" to activate"];
     [bringSkypeToFrontScript executeAndReturnError:nil];
 }
@@ -690,6 +690,8 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 	
 	// next version : should be a preference to choose if this opens an IM or voice chat
 	NSString *talkCommand = [NSString stringWithFormat:@"OPEN IM %@", buddy];
+
+	[talkCommand autorelease];
 	
 	[self skypeSend:talkCommand];
 	[self bringSkypeToFront];
