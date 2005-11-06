@@ -60,11 +60,11 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
     queuedStatusChange = nil;
 
     // prepare array for storing the skype userstatus info
-    userStatusDefs = malloc( sizeof(id**)  * N_USERSTATUS  );
+    userStatusDefs = malloc( (sizeof(id**)  * N_USERSTATUS)  );
 
     int i;
     for ( i=0 ; i  < N_USERSTATUS ; i++ ) {
-        userStatusDefs[i] = malloc( sizeof(id*) * N_USERSTATUS_DEF_KEYS );
+        userStatusDefs[i] = malloc( sizeof(id*) * (N_USERSTATUS_DEF_KEYS+1) ); // why is the +1 necessary to pass malloc debug?
 
         // we will sometimes send messages via a loop - it's ok to message nil
         userStatusDefs[i][USERSTATUS_MENUITEM] = nil;
@@ -143,7 +143,12 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
     def[USERSTATUS_REGEX]          = [[AGRegex alloc] initWithPattern:@"^LOGGEDOUT$"];
 	
     skypeMessageSplit = [[AGRegex alloc] initWithPattern:@" +"];
-    
+	
+	skypeFullnameRegex = [[AGRegex alloc] initWithPattern:@"FULLNAME (.*)$"];
+	
+	buddyNames = [[NSMutableDictionary alloc] initWithCapacity:10];
+	buddyStatus = [[NSMutableDictionary alloc] initWithCapacity:10];
+		
     return self;
 }
 
@@ -311,9 +316,7 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 	[[self quitBothMenuItem] setEnabled:NO];
 
     [SkypeAPI connect];
-    
-    // if connected, the response will automatically update the menu appropriately
-    [self skypeSend:@"GET USERSTATUS"];
+	// auto connect things are done in attachResponse
 }
 
 - (void)toggleMenuSkypeConnected
@@ -325,13 +328,21 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 	[[self quitBothMenuItem] setEnabled:YES];
 }
 
+-(int)buddyMenuStartIndex
+{
+	return N_USERSTATUS + 3;
+}
+
 -(NSMenu*)quitSubmenu
 {
-	if (![[theMenu itemAtIndex:N_USERSTATUS+5] hasSubmenu]) {
-		NSLog(@"Quit submenu not found");
-		return nil;
-	}
-	return (NSMenu*)[[theMenu itemAtIndex:N_USERSTATUS+5] submenu];
+	NSEnumerator *enumerator = [[theMenu itemArray] objectEnumerator];
+	NSMenuItem *item;
+	while( (item=[enumerator nextObject]) )
+		if([[item title] isEqualToString:@"Quit"] && [item hasSubmenu])
+			return [item submenu];
+
+	NSLog(@"Quit submenu not found");
+	return nil;
 }
 
 -(NSMenuItem*)quitSkypeMenuItem
@@ -355,6 +366,8 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 	// disable quit items
 	[[self quitSkypeMenuItem] setEnabled:NO];
 	[[self quitBothMenuItem] setEnabled:NO];
+	
+	[self clearBuddyMenu];
 }
 
 - (void)toggleMenuSkypeDisconnected
@@ -382,22 +395,104 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
     NSString* token1 = [notificationTokens objectAtIndex:0];
 
     // switch out to differen methods
-    if ( [token1 isEqualToString:@"USERSTATUS"] ) {
+    if ( [token1 isEqualToString:@"USERSTATUS"] )
         // do i need to use a pool here for mem allocation?
         [self userstatusNotificationReceived: notificationTokens ];
 
-    } else if ( [token1 isEqualToString:@"PROTOCOL"] ) {
+	else if ( [token1 isEqualToString:@"PROTOCOL"] ) 
         [self skypeProtocolNotificationReceived: notificationTokens ];
+		
+	else if ( [token1 isEqualToString:@"USER"] ) 
+		[self skypeBuddyNotificationReceived: notificationTokens fullString:aNotificationString];
 
-    } else {
-        NSLog(@"Unknown Skype notification recieved: %@", aNotificationString);
-    }
+	else if ( [token1 isEqualToString:@"USERS"] )
+		[self skypeBuddyListReceived: notificationTokens];
+
+	else 
+		NSLog(@"Unknown Skype notification recieved: %@", aNotificationString);
+
 }
 
 -(void)skypeProtocolNotificationReceived:(NSArray*)tokens
 {
     // if the protocol is < 2 we should remove "skypeme" from the menu...
     NSLog(@"Skype notified us that we are using protocol: %@", [tokens objectAtIndex:1]);
+}
+
+-(void)skypeBuddyNotificationReceived:(NSArray*)tokens fullString:(NSString*)notificationString
+{
+	NSString *token1 = [tokens objectAtIndex:1];
+	NSString *token2 = [tokens objectAtIndex:2];
+		
+	if ([token2 isEqualToString:@"ONLINESTATUS"])
+		[self skypeBuddy:token1 statusString:[tokens objectAtIndex:3]];
+
+	else if ([token2 isEqualToString:@"FULLNAME"])
+		[self skypeReceivedBuddy:token1 fullnameNotification:notificationString];
+	
+	else
+		NSLog(@"Unknown buddy notification recieved: %@", tokens);
+}
+
+-(void)skypeBuddyListReceived:(NSArray*)tokens
+{
+	NSEnumerator *buddyEnum = [tokens objectEnumerator];
+	[buddyEnum nextObject]; // ignore first token which is "USERS"
+	
+	NSString *buddy;
+	NSCharacterSet *comma = [NSCharacterSet characterSetWithCharactersInString:@","];
+	
+	while ( (buddy = [[buddyEnum nextObject] stringByTrimmingCharactersInSet:comma]) ) {
+		[self updateStatusForBuddy:buddy];
+	}
+}
+
+-(void)updateStatusForBuddy:(NSString*)buddy
+{
+	// request their status
+	[self skypeSend:[NSString stringWithFormat:@"GET USER %@ ONLINESTATUS", buddy]];
+}
+
+-(void)skypeReceivedBuddy:(NSString*)buddy fullnameNotification:(NSString*)notificationString
+{
+	NSString *match = [[skypeFullnameRegex findInString:notificationString] groupAtIndex:1];
+
+	if ( ! match )
+		NSLog(@"No match found in buddy (%@) FULLNAME notification: %@", buddy, notificationString);
+	else {
+		NSLog(@"fullname for buddy (%@) is '%@'", buddy, match);
+		[buddyNames setValue:match forKey:buddy];
+	}
+}
+
+-(void)skypeBuddy:(NSString*)buddy statusString:(NSString*)statusString
+{
+	NSLog(@"Buddy (%@) now has status (%@)", buddy, statusString);
+
+	// using nil since that will cause setValue:forKey to remove the entry
+	NSNumber *status = nil;
+	
+	// for now, we're assuming that the online/away/offline judgement is the
+	// same for buddies as for our own userstatus
+	int i = 0;
+    for (i = 0; i < N_USERSTATUS  ; i++) {
+		
+        if ( [[userStatusDefs[i][USERSTATUS_REGEX] findInString:statusString] count] == 1 ) {
+			
+            if ( [userStatusDefs[i][USERSTATUS_AWAY_STATUS] isEqualToString: @"ONLINE"] ) {
+                status = [NSNumber numberWithBool:YES];
+				break;
+			}
+		} 
+	}
+	
+	[buddyStatus setValue:status forKey:buddy];
+	
+	// make sure we know their fullname
+	if (![buddyNames objectForKey:buddy]) 
+		// request it
+		[self skypeSend:[NSString stringWithFormat:@"GET USER %@ FULLNAME", buddy]];	
+
 }
 
 - (void)tickStatusMenuItem:(int)itemIdx
@@ -434,9 +529,11 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
             if ( [userStatusDefs[i][USERSTATUS_ONLINE_STATUS] isEqualToString: @"OFFLINE"] ) {
                 i = USERSTATUS_OFFLINE; // collapse all offline notifs to one menu item
                 [self toggleMenuSkypeDisconnected];
+				break;
             }   else {
                 // it's online, so we also need to set the user status in the menu
                 [self toggleMenuSkypeConnected];
+				break;
             }
 
             [self tickStatusMenuItem:i];
@@ -469,8 +566,10 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
             [self setSkypeUserStatus:queuedStatusChange];
             [queuedStatusChange release];
             queuedStatusChange = nil;
-        } else
+        } else {
             [self skypeSend:@"GET USERSTATUS"];
+			[self skypeSend:@"SEARCH FRIENDS"];
+		}
         break;
     default:
         NSLog(@"Unknown response from Skype in response to our connection attempt");
@@ -479,6 +578,119 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
     
 }
 
+// ensure the buddy menu is updated when the menu is displayed 
+// need a different way to do this, since we change the menu from under the feet of the
+// array iterator that the foundation class is iterating over...
+- (BOOL)validateMenuItem:(NSMenuItem *)anItem
+{
+	//NSLog(@"validating item: %@", anItem);
+    if([[anItem title] isEqualToString:@"Online"])
+        [self updateBuddyMenu];
+    return YES;
+}
+
+
+-(void)updateBuddyMenu
+{
+	NSLog(@"updating buddy menu");
+	[self clearBuddyMenu];
+	
+	// the dictionary can change from under us - which would triger a beyond bounds exception
+	NSDictionary *buddyStatusCopy = [NSDictionary dictionaryWithDictionary:buddyStatus];
+			
+	
+	// should really be sorted by display name, but that is a bit trickier...
+	NSArray *sortedBuddies = [[buddyStatusCopy allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+	
+	// need the reverse of the sorted array since we are pushing them into the same index location
+	NSEnumerator *buddyEnum = [sortedBuddies reverseObjectEnumerator];
+	
+	// need to sort this
+	
+	int itemIndex = [self buddyMenuStartIndex];
+	NSMenuItem *item;
+	NSString *buddy;
+	
+	if ( [buddyStatusCopy count] == 0 ) {
+		NSLog(@"No buddies available");
+		item = [[NSMenuItem alloc]
+			       initWithTitle:@"None Available"
+				   action:nil
+				   keyEquivalent:@""];
+		
+		[item setImage:[NSImage imageNamed:@"buddyMenuImage"]];
+		
+		[theMenu insertItem:item atIndex:itemIndex];
+	} else {
+		NSLog(@"%d buddies available", [buddyStatusCopy count]);
+				
+		while ( (buddy=[buddyEnum nextObject]) ) {
+			NSLog(@"Adding buddy to menu : %@", buddy);
+			NSString *fullname = [buddyNames objectForKey:buddy];
+			fullname = fullname == nil || [fullname isEqualToString:@""] ? buddy : fullname; // some people don't set their fullname property
+			
+			NSLog(@"fullname is : %@", fullname);
+			item = [[NSMenuItem alloc]
+				       initWithTitle:fullname
+					   action:@selector(buddyMenuSelection:)
+					   keyEquivalent:@""];
+			
+			[item setImage:[NSImage imageNamed:@"buddyMenuImage"]];
+			[item setTarget:self];
+			
+			[theMenu insertItem:item atIndex:itemIndex];
+		}
+	}
+
+}
+
+-(void)clearBuddyMenu
+{
+	NSMenuItem *item;
+	NSEnumerator *enumerator = [[theMenu itemArray] objectEnumerator];
+
+	//  NSLog(@"clearing menu"); 
+
+	while(item=[enumerator nextObject])
+		if([item action]==@selector(buddyMenuSelection:) || [[item title] isEqualToString:@"None Available"]){
+			[theMenu removeItem:item];
+			[item dealloc];
+		}
+	
+}
+
+
+-(IBAction)buddyMenuSelection:(id)sender
+{
+	NSString *fullname = [sender title];
+	NSLog(@"Buddy selected: %@", [sender title]);
+	
+	NSEnumerator *buddyEnum = [buddyNames keyEnumerator];
+	NSString *buddy;
+	BOOL found = NO;
+
+	while( (buddy = [buddyEnum nextObject]) ) {
+		if ([[buddyNames objectForKey:buddy] isEqualToString:fullname]) {
+			found = YES;
+			NSLog(@"found budd name (%@) for fullname (%@)", buddy, fullname);
+			break;
+		} else
+			NSLog(@"name from array (%@) is not who we're looking for (%@)", [buddyNames objectForKey:buddy], fullname);
+	}
+
+	if ( ! found ) {
+		// if no entry matches against the fullname, it must be the buddy username itself (and the user hasn't set a fullname)
+		NSLog(@"Defaulting to menu display name for buddyname: %@", fullname);
+		buddy = fullname;
+		// should check that this contains no spaces - i assume a buddy username can't comtain spaces?
+	}
+	
+	
+	// next version : should be a preference to choose if this opens an IM or voice chat
+	NSString *talkCommand = [NSString stringWithFormat:@"OPEN IM %@", buddy];
+	
+	[self skypeSend:talkCommand];
+}
 
 
 -(void)dealloc

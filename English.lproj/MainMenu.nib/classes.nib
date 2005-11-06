@@ -4,6 +4,7 @@
         {
             ACTIONS = {
                 activateSkypeMenuAction = id; 
+                buddyMenuSelection = id; 
                 changeStatusMenuItem = id; 
                 openAboutWindow = id; 
                 quitBoth = id; 

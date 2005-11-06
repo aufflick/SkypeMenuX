@@ -47,6 +47,13 @@
 
 @interface SkypeMenuController : NSObject <SkypeAPIDelegate> {
 	
+	// buddy username -> real name mapping
+	NSMutableDictionary *buddyNames;
+	// where we keep track of buddy online status by name
+	NSMutableDictionary *buddyStatus;
+	
+	AGRegex *skypeFullnameRegex;
+	
   //the status item that will be added to the system status bar
   NSStatusItem *statusItem;
 	
@@ -109,6 +116,10 @@
 -(void)toggleMenuSkypeDisconnected;
 -(void)releaseAboutController;
 
+// handle buddy status changes
+-(void)skypeBuddyNotificationReceived:(NSArray*)tokens;
+-(void)skypeBuddy:(NSString*)buddy statusString:(NSString*)status;
+-(IBAction)buddyMenuSelection:(id)sender;
 
 @end
 
