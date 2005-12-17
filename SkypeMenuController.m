@@ -45,6 +45,7 @@
 #import "AppKit/NSMenuItem.h"
 #import <AGRegex/AGRegex.h>;
 #import "AboutController.h";
+#import "PreferenceController.h";
 
 NSString* const myApplicationName = @"SkypeMenuX";
 static const int N_USERSTATUS = 9;
@@ -152,8 +153,37 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
     return self;
 }
 
+-(void)initialize
+{
+    NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
+    
+    [defaultValues setObject:[NSNumber numberWithBool:NO] forKey: startSkypeOnStartupKey];
+    [defaultValues setObject:[NSNumber numberWithBool:NO] forKey: hideSkypeOnStartupKey];
+        
+    [defaultValues setObject:[NSNumber numberWithBool:NO] forKey: quitSkypeOnExitKey];
+            
+    [[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
+}
+
 - (void)awakeFromNib
 {
+    // start skype if necessary
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:startSkypeOnStartupKey]) {
+        if (![SkypeAPI isSkypeRunning]) {
+            [self bringSkypeToFront];
+            // skype is piggy about letting us connect while it is starting and once
+            // we've had a failed attempt it blocks us forever!
+            [self waitForSkype];
+        }
+    }
+    
+    //can't reliably  tell skype to hide while it is starting up
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:hideSkypeOnStartupKey]) {
+        skypeShouldHideOnStartup = YES;
+        [self hideSkype];
+    }
+    
+    
     statusItem = [[[NSStatusBar systemStatusBar]
                       statusItemWithLength:NSSquareStatusItemLength] retain];
        
@@ -196,9 +226,9 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
     //[[theMenu itemAtIndex:0] setEnabled: NO]; // my status - handled by auto enable
 	[[self quitSkypeMenuItem] setEnabled: NO]; // quit skype
 	[[self quitBothMenuItem] setEnabled: NO]; // quit both
-		
 
     [SkypeAPI setSkypeDelegate:self];
+    
     
     [SkypeAPI connect];
     
@@ -238,6 +268,23 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
     [bringSkypeToFrontScript executeAndReturnError:nil];
 }
 
+-(void)waitForSkype
+{
+    
+    // send command  \"\" script name \"SkypeMenuX\"
+    //NSAppleScript *waitForSkypeScript = [[NSAppleScript alloc] initWithSource:@"tell application \"Skype\" \n  count windows \n    end tell"];
+    //int waitTries = 0;
+    //NSString *response;
+    //while(
+      //    (
+        //   (response = [[waitForSkypeScript executeAndReturnError:nil] stringValue]) == nil
+          //  || ![response isEqualTo:@"2"]
+           //)
+         //&& waitTries++ < 4
+        //)
+        sleep(10); // this is so crap
+}
+
 -(IBAction)quitSkypeMenuAction:(id)sender
 {
     [self quitSkype];
@@ -249,6 +296,16 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
         return;
     NSAppleScript *script;
     script = [[NSAppleScript alloc] initWithSource:@"tell application \"Skype\" to quit"];
+    [script executeAndReturnError:nil];
+    [script release];
+}
+
+-(void)hideSkype
+{
+    // don't do a is running test here - trust that our callers know what they are doing
+    NSLog(@"hiding Skype");
+    NSAppleScript *script;
+    script = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\n set visible of process \"Skype\" to false \n end tell"];
     [script executeAndReturnError:nil];
     [script release];
 }
@@ -309,11 +366,18 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 - (void)skypeBecameAvailable:(NSNotification*)aNotification
 {
     NSLog(@"Skype became available");
+    
+    // hide it if we should
+    if (skypeShouldHideOnStartup) {
+        [self hideSkype];
+        skypeShouldHideOnStartup = NO;
+    }
 	
 	// toggle quit items
 	[[self quitSkypeMenuItem] setEnabled:NO];
 	[[self quitBothMenuItem] setEnabled:NO];
-
+    
+    skypeConnectRetries = 0;
     [SkypeAPI connect];
 	// auto connect things are done in attachResponse
 }
@@ -346,12 +410,12 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 
 -(NSMenuItem*)quitSkypeMenuItem
 {
-	return (NSMenuItem*)[[self quitSubmenu] itemAtIndex:1];
+	return (NSMenuItem*)[[self quitSubmenu] itemAtIndex:0];
 }
 
 -(NSMenuItem*)quitBothMenuItem
 {
-	return (NSMenuItem*)[[self quitSubmenu] itemAtIndex:2];
+	return (NSMenuItem*)[[self quitSubmenu] itemAtIndex:4];
 }
 
 
@@ -560,6 +624,15 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
     {
     case 0:
         NSLog(@"Failed to connect");
+        
+        // retry 3 times
+        if (skypeConnectRetries < 4) {
+            skypeConnectRetries++;
+            sleep(2 * skypeConnectRetries);
+            [SkypeAPI removeSkypeDelegate];
+            [SkypeAPI setSkypeDelegate:self];
+            [SkypeAPI connect];
+        }
         break;
     case 1:
         NSLog(@"Skype sucessfully responded to our connection attempt");
@@ -578,6 +651,12 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
         NSLog(@"Unknown response from Skype in response to our connection attempt");
         break;
     }
+    
+    // butthe app IS running, so we can quit it
+    // toggle quit items
+    [[self quitSkypeMenuItem] setEnabled:NO];
+    [[self quitBothMenuItem] setEnabled:NO];        
+    
     
 }
 
@@ -631,17 +710,44 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 				NSLog(@"fullname is : %@", fullname);
 				item = [[NSMenuItem alloc]
 				       initWithTitle:fullname
-					   action:@selector(buddyMenuSelection:)
+					   action:nil
 					   keyEquivalent:@""];
 			
 				[item setImage:[NSImage imageNamed:@"buddyMenuImage"]];
-				[item setTarget:self];
+				[item setSubmenu:[self makeChatSubmenu:fullname]];
+				[item setTarget: self];
 			
 				[theMenu insertItem:item atIndex:itemIndex];
 			}
 		}
 	}
 
+}
+
+-(NSMenu*)makeChatSubmenu:(NSString*)fullname
+{
+	NSMenu *buddySubmenu;
+	
+	// setup the sub menu that will hang off buddy status items
+	buddySubmenu = [[NSMenu alloc] init];
+	NSMenuItem *chatItem;
+	
+	// is there any way to find out what capabilities a particular buddy has?
+    
+    // if the menu is always going to be the same we can maybe just use one menu object
+    // certainly we can clone rather than building
+
+	chatItem = [[NSMenuItem alloc] initWithTitle:@"Text Chat" action:@selector(buddyMenuTextChat:) keyEquivalent:@""];
+	[chatItem setTarget: self];
+    [chatItem setImage: [NSImage imageNamed:@"text_chat"]];
+	[buddySubmenu addItem:chatItem];
+	
+	chatItem = [[NSMenuItem alloc] initWithTitle:@"Voice Chat" action:@selector(buddyMenuVoiceChat:) keyEquivalent:@""];
+	[chatItem setTarget: self];
+    [chatItem setImage: [NSImage imageNamed:@"voice_chat"]];
+	[buddySubmenu addItem:chatItem];
+	
+	return buddySubmenu;
 }
 
 -(void)clearBuddyMenu
@@ -654,18 +760,22 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 		NSEnumerator *enumerator = [[theMenu itemArray] objectEnumerator];
 
 		while( (item=[enumerator nextObject]) )
-			if( [item action]==@selector(buddyMenuSelection:) || [[item title] isEqualToString:@"None Available"]){
+			if( ([item submenu] != nil && ![[item title] isEqualToString:@"Quit"])
+			|| [[item title] isEqualToString:@"None Available"]){
 				[theMenu removeItem:item];
-				[item dealloc];
+				if ([item submenu])
+					[[item submenu] release];
+				[item release];
 			}
 	}
 }
 
-
--(IBAction)buddyMenuSelection:(id)sender
+-(NSString*)buddyNameFromSubmenuItem:(NSMenuItem*)item
 {
-	NSString *fullname = [sender title];
-	NSLog(@"Buddy selected: %@", [sender title]);
+	// get the title of the item whose submenu was used
+	int buddyItemIndex = [theMenu indexOfItemWithSubmenu:[item menu]];
+	NSString *fullname = [[theMenu itemAtIndex:buddyItemIndex] title];
+	NSLog(@"Buddy selected: %@", [item title]);
 	
 	NSEnumerator *buddyEnum = [buddyNames keyEnumerator];
 	NSString *buddy;
@@ -686,22 +796,51 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 		buddy = fullname;
 		// should check that this contains no spaces - i assume a buddy username can't comtain spaces?
 	}
-	
-	
-	// next version : should be a preference to choose if this opens an IM or voice chat
-	NSString *talkCommand = [NSString stringWithFormat:@"OPEN IM %@", buddy];
 
-	// without this, we seem to have a small memory leak. with it, we get complaints of a double release
-	// I guess I don't quite get this autorelease pool stuff yet...
-	//[talkCommand autorelease];
+	return buddy;
+}
+
+
+-(IBAction)buddyMenuTextChat:(id)sender
+{
+	NSString *buddy = [self buddyNameFromSubmenuItem: sender];
+	NSLog(@"got buddy string '%@' from buddyNameFromSubmenuItem", buddy);
+	
+	NSString *talkCommand = [NSString stringWithFormat:@"OPEN IM %@", buddy];
 	
 	[self skypeSend:talkCommand];
 	[self bringSkypeToFront];
 }
 
+-(IBAction)buddyMenuVoiceChat:(id)sender
+{
+	NSString *buddy = [self buddyNameFromSubmenuItem: sender];
+	NSLog(@"got buddy string '%@' from buddyNameFromSubmenuItem", buddy);
+	
+	NSString *talkCommand = [NSString stringWithFormat:@"CALL %@", buddy];
+	
+	[self skypeSend:talkCommand];
+	[self bringSkypeToFront];
+}
+
+-(IBAction)openPrefs:(id)sender 
+{ 
+    NSLog(@"opening prefs"); 
+    if(!preferenceController) 
+        preferenceController=[[PreferenceController alloc] init];
+    else
+        [preferenceController refresh];
+    
+    [NSApp activateIgnoringOtherApps:YES]; 
+    [[preferenceController window] makeKeyAndOrderFront:nil]; 
+} 
 
 -(void)dealloc
 {
+    // quit skype if necessary - should be somewhere else?
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:quitSkypeOnExitKey])
+        [self quitSkype];
+    
     [statusItem release];
     
     // free the (wrongly capitalised) userstatusdef structs

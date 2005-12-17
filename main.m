@@ -41,8 +41,13 @@
 
 
 #import <Cocoa/Cocoa.h>
+#import "PreferenceController.h";
 
 int main(int argc, char *argv[])
 {
+    NSString *arg = [[NSString alloc] initWithFormat:@"%s", argv[0]];
+    [PreferenceController setArgvZero:arg];
+    [arg release];
+
     return NSApplicationMain(argc,  (const char **) argv);
 }

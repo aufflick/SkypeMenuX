@@ -44,6 +44,7 @@
 #import <Skype/Skype.h>
 @class AGRegex, AGRegexMatch;
 @class AboutController;
+@class PreferenceController;
 
 @interface SkypeMenuController : NSObject <SkypeAPIDelegate> {
 	
@@ -82,8 +83,13 @@
   // about window
   AboutController *aboutController;
   
+  PreferenceController *preferenceController;
+  
   // cache the bring skype to front applescript - used every time we chat
   NSAppleScript *bringSkypeToFrontScript;
+  
+  BOOL skypeShouldHideOnStartup;
+  int skypeConnectRetries;
 }
 
 // manage skype status
@@ -114,6 +120,8 @@
 -(IBAction)quitBoth:(id)sender;
 -(void)bringSkypeToFront;
 -(void)quitSkype;
+-(void)waitForSkype;
+-(void)hideSkype;
 
 -(void)toggleMenuSkypeConnected;
 -(void)toggleMenuSkypeDisconnected;
@@ -121,7 +129,6 @@
 
 // handle buddy status changes
 -(void)skypeBuddy:(NSString*)buddy statusString:(NSString*)status;
--(IBAction)buddyMenuSelection:(id)sender;
 -(void)clearBuddyMenu;
 -(void)skypeBuddyNotificationReceived:(NSArray*)tokens fullString:(NSString*)notificationString;
 -(void)skypeBuddyListReceived:(NSArray*)tokens;
@@ -129,6 +136,12 @@
 -(void)updateStatusForBuddy:(NSString*)buddy;
 -(void)updateBuddyMenu;
 -(void)clearBuddyMenu;
+
+-(NSString*)buddyNameFromSubmenuItem:(NSMenuItem*)item;
+-(NSMenu*)makeChatSubmenu:(NSString*)fullname;
+
+
+-(IBAction)openPrefs:(id)sender;
 
 @end
 
