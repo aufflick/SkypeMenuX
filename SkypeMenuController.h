@@ -6,7 +6,7 @@
 //
 
 /*
- Copyright Â© 2005, Mark Aufflick
+ Copyright © 2005, Mark Aufflick
  All rights reserved.
  
  Redistribution and use in source and binary forms, with or without

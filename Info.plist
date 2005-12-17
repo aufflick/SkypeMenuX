@@ -17,7 +17,7 @@
 	<key>CFBundleSignature</key>
 	<string>SkMX</string>
 	<key>CFBundleVersion</key>
-	<string>0.5b</string>
+	<string>0.6b</string>
 	<key>LSUIElement</key>
 	<string>1</string>
 	<key>NSMainNibFile</key>

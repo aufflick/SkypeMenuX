@@ -31,6 +31,7 @@
 		641D2C160942D4CE00D5354A /* AGRegex.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 641D2BD70942D3E100D5354A /* AGRegex.framework */; };
 		641D2C1A0942D4F100D5354A /* About.nib in Resources */ = {isa = PBXBuildFile; fileRef = 641D2C190942D4F100D5354A /* About.nib */; };
 		641D2C820943B71A00D5354A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 641D2C810943B71A00D5354A /* WebKit.framework */; };
+		643BD7B10953BDE40032618A /* SkypeMenuX.icns in Resources */ = {isa = PBXBuildFile; fileRef = 643BD7B00953BDE40032618A /* SkypeMenuX.icns */; };
 		6493F440094EAE920028FC44 /* voice_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = 6493F43F094EAE920028FC44 /* voice_chat.png */; };
 		6493F442094EAE9F0028FC44 /* text_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = 6493F441094EAE9F0028FC44 /* text_chat.png */; };
 		649D5700094E8D4C009B97F5 /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 649D56FE094E8D4C009B97F5 /* PreferenceController.m */; };
@@ -105,6 +106,7 @@
 		641D2C030942D44800D5354A /* x-click-but21.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "x-click-but21.gif"; sourceTree = "<group>"; };
 		641D2C190942D4F100D5354A /* About.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = About.nib; sourceTree = "<group>"; };
 		641D2C810943B71A00D5354A /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
+		643BD7B00953BDE40032618A /* SkypeMenuX.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SkypeMenuX.icns; sourceTree = "<group>"; };
 		6493F43F094EAE920028FC44 /* voice_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voice_chat.png; sourceTree = "<group>"; };
 		6493F441094EAE9F0028FC44 /* text_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = text_chat.png; sourceTree = "<group>"; };
 		649D56FD094E8D4C009B97F5 /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				643BD7B00953BDE40032618A /* SkypeMenuX.icns */,
 				641D2C190942D4F100D5354A /* About.nib */,
 				641D2BE50942D41200D5354A /* banner-right.png */,
 				641D2BE60942D41200D5354A /* Banner.png */,
@@ -304,6 +307,7 @@
 				649D5702094E8E35009B97F5 /* Preferences.nib in Resources */,
 				6493F440094EAE920028FC44 /* voice_chat.png in Resources */,
 				6493F442094EAE9F0028FC44 /* text_chat.png in Resources */,
+				643BD7B10953BDE40032618A /* SkypeMenuX.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
