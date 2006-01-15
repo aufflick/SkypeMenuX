@@ -173,7 +173,7 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
             [self bringSkypeToFront];
             // skype is piggy about letting us connect while it is starting and once
             // we've had a failed attempt it blocks us forever!
-            [self waitForSkype];
+            //[self waitForSkype];
         }
     }
     
@@ -229,8 +229,9 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 
     [SkypeAPI setSkypeDelegate:self];
     
-    
-    [SkypeAPI connect];
+    if ([SkypeAPI isSkypeRunning]) {
+        [SkypeAPI connect];
+    }
     
 }
 
@@ -263,9 +264,7 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
 
 -(void)bringSkypeToFront
 {
-	if ( ! bringSkypeToFrontScript )
-		bringSkypeToFrontScript = [[NSAppleScript alloc] initWithSource:@"tell application \"Skype\" to activate"];
-    [bringSkypeToFrontScript executeAndReturnError:nil];
+    [[NSWorkspace sharedWorkspace] launchApplication:@"Skype"];
 }
 
 -(void)waitForSkype
@@ -345,7 +344,6 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
         NSString* skypeCommandString = [NSString stringWithFormat:@"%@%@", @"SET USERSTATUS ", aSkypeStatusString];
     
         [self skypeSend:skypeCommandString];
-		[skypeCommandString autorelease];
     }
 }
 
@@ -626,13 +624,14 @@ static const int N_USERSTATUS_DEF_KEYS = 6;
         NSLog(@"Failed to connect");
         
         // retry 3 times
-        if (skypeConnectRetries < 4) {
+        // doesn't help
+        /*if (skypeConnectRetries < 4) {
             skypeConnectRetries++;
             sleep(2 * skypeConnectRetries);
             [SkypeAPI removeSkypeDelegate];
             [SkypeAPI setSkypeDelegate:self];
             [SkypeAPI connect];
-        }
+        }*/
         break;
     case 1:
         NSLog(@"Skype sucessfully responded to our connection attempt");

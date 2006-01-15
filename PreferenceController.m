@@ -166,12 +166,9 @@ NSString *argvZero;
 }
 
 -(NSString*)skypeFullPath {
-    NSAppleScript *getSkypePathScript = [[NSAppleScript alloc] initWithSource:@"POSIX path of (path to application \"Skype\")"];
-    NSString *skypePath = [[getSkypePathScript executeAndReturnError:nil] stringValue];
-    [getSkypePathScript release];
-    
-    // seems to come with a trailing slash
-    return [self appFullPathForString:skypePath];
+    NSString *skypePath = [[NSWorkspace sharedWorkspace] fullPathForApplication:@"Skype"];
+
+    return skypePath;
 }
 
 -(NSString*)appPath {

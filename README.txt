@@ -1,3 +1,10 @@
+2005-12-18 : 0.6b : Additional features + project upgraded to Xcode 2.1
+ * features here....
+ * project upgrade notes...
+ * Built on OS 10.4 - 10.3 not yet tested
+ * Disk Image target requires buildDMG.pl - you can download it from
+   http://www.objectpark.org
+
 2005-11-07 : 0.5b : Code cleanup and package
  * Buddy status feature now ready for general consumption
 

@@ -57,6 +57,16 @@
 		};
 /* End PBXBuildStyle section */
 
+/* Begin PBXContainerItemProxy section */
+		64F05CF0095522B60083D631 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D1107260486CEB800E47090;
+			remoteInfo = SkypeMenuX;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		641D2C110942D4B100D5354A /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -112,6 +122,9 @@
 		649D56FD094E8D4C009B97F5 /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; };
 		649D56FE094E8D4C009B97F5 /* PreferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceController.m; sourceTree = "<group>"; };
 		649D5701094E8E35009B97F5 /* Preferences.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Preferences.nib; sourceTree = "<group>"; };
+		64F05CA1095517300083D631 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		64F05D4209552A010083D631 /* buildDMG.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = buildDMG.pl; sourceTree = "<group>"; };
+		64F05D8D09554D930083D631 /* dmgSLA.r */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.rez; path = dmgSLA.r; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SkypeMenuX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkypeMenuX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -170,11 +183,13 @@
 		29B97314FDCFA39411CA2CEA /* SkypeMenuX */ = {
 			isa = PBXGroup;
 			children = (
+				64F05CA1095517300083D631 /* README.txt */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				64F05D4309552A090083D631 /* Tools */,
 			);
 			name = SkypeMenuX;
 			sourceTree = "<group>";
@@ -198,6 +213,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				64F05D8D09554D930083D631 /* dmgSLA.r */,
 				643BD7B00953BDE40032618A /* SkypeMenuX.icns */,
 				641D2C190942D4F100D5354A /* About.nib */,
 				641D2BE50942D41200D5354A /* banner-right.png */,
@@ -235,7 +251,36 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		64F05D4309552A090083D631 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				64F05D4209552A010083D631 /* buildDMG.pl */,
+			);
+			name = Tools;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		64F05CC4095518A20083D631 /* Disk Image */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$SOURCE_ROOT/buildDMG.pl -debug $PROJECT_NAME.app '$SOURCE_ROOT/SkypeMenuX Installation.webloc'";
+			buildConfigurationList = 64F05CD0095518C70083D631 /* Build configuration list for PBXLegacyTarget "Disk Image" */;
+			buildPhases = (
+			);
+			buildSettings = {
+				PRODUCT_NAME = ext;
+			};
+			buildToolPath = /usr/bin/perl;
+			buildWorkingDirectory = $BUILT_PRODUCTS_DIR;
+			dependencies = (
+				64F05CF1095522B60083D631 /* PBXTargetDependency */,
+			);
+			name = "Disk Image";
+			passBuildSettingsInEnvironment = 1;
+			productName = ext;
+		};
+/* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
 		8D1107260486CEB800E47090 /* SkypeMenuX */ = {
@@ -276,6 +321,7 @@
 			projectDirPath = "";
 			targets = (
 				8D1107260486CEB800E47090 /* SkypeMenuX */,
+				64F05CC4095518A20083D631 /* Disk Image */,
 			);
 		};
 /* End PBXProject section */
@@ -327,6 +373,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		64F05CF1095522B60083D631 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D1107260486CEB800E47090 /* SkypeMenuX */;
+			targetProxy = 64F05CF0095522B60083D631 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -347,6 +401,28 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		64F05CD1095518C70083D631 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = ext;
+			};
+			name = Debug;
+		};
+		64F05CD2095518C70083D631 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DMG_COMPRESSIONLEVEL = 6;
+				DMG_INTERNETENABLED = 1;
+				DMG_NAME = $PROJECT_NAME;
+				DMG_SLA_RSRCFILE = $SOURCE_ROOT/dmgSLA.r;
+				DMG_VOLNAME = $PROJECT_NAME;
+			};
+			name = Release;
+		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -410,6 +486,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		64F05CD0095518C70083D631 /* Build configuration list for PBXLegacyTarget "Disk Image" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64F05CD1095518C70083D631 /* Debug */,
+				64F05CD2095518C70083D631 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "SkypeMenuX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
