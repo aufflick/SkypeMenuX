@@ -14,7 +14,8 @@
    * Set preferences to start SkypeMenuX and Skype on startup
 
  Build Notes:
-   * I had problems with the 
+   * I had problems with Xcode 2.1 upgrading the Xcode 1.5 project. In
+     the end I built a new project from scratch :(
    * Built on OS 10.4 - 10.3 not yet tested
    * Disk Image target requires buildDMG.pl - you can download it from
      http://www.objectpark.org
