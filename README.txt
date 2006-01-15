@@ -1,9 +1,23 @@
-2005-12-18 : 0.6b : Additional features + project upgraded to Xcode 2.1
- * features here....
- * project upgrade notes...
- * Built on OS 10.4 - 10.3 not yet tested
- * Disk Image target requires buildDMG.pl - you can download it from
-   http://www.objectpark.org
+2005-12-27 : 0.6b : Bugs fixed
+   * Disk image no longer created automtically by buildDMG.pl due
+     to aesthetic requirements
+   * Now also tested on OSX 10.3.9
+
+ Bugs Fixed:
+   * Skype launching at startup is now reliable
+     (changed Skype activation code to use cocoa workspace object instead
+     of applescript)
+
+2005-12-18 : (never released) : Additional features + project upgraded to Xcode 2.1
+ Added Features:
+   * Start either voice calls or text chats with online buddies
+   * Set preferences to start SkypeMenuX and Skype on startup
+
+ Build Notes:
+   * I had problems with the 
+   * Built on OS 10.4 - 10.3 not yet tested
+   * Disk Image target requires buildDMG.pl - you can download it from
+     http://www.objectpark.org
 
 2005-11-07 : 0.5b : Code cleanup and package
  * Buddy status feature now ready for general consumption
