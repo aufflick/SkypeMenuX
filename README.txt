@@ -1,3 +1,8 @@
+2018-06-24 : Initial GitHub import
+
+I imported my first public MacOS project from SourceForge so everyone else can join
+me in laughing at my old code ;)
+
 2005-12-27 : 0.6b : Bugs fixed
    * Disk image no longer created automtically by buildDMG.pl due
      to aesthetic requirements
