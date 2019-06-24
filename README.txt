@@ -3,6 +3,9 @@
 I imported my first public MacOS project from SourceForge so everyone else can join
 me in laughing at my old code ;)
 
+Original project (including 3 open bugs from 15 years ago!)
+  * https://sourceforge.net/projects/skypemenux/
+
 2005-12-27 : 0.6b : Bugs fixed
    * Disk image no longer created automtically by buildDMG.pl due
      to aesthetic requirements
